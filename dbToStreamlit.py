@@ -1,7 +1,8 @@
 import pandas as pd
 import psycopg2
+import streamlit as st
 
-def getDatas():
+'''def getDatas():
     # Database connection
     conn = psycopg2.connect(dbname='APP', user='MCL1021', password='FloMar.07-23$')
     cur = conn.cursor()
@@ -19,13 +20,37 @@ def getDatas():
     conn.commit()
     cur.close()
     conn.close()
-    print("Database logout")
-
-    # Cleaning file
-    file = 'C:\\Database\\Exercices\\DATA.csv'
-    df = pd.read_csv(file, encoding='unicode_escape')
-    df.drop(columns = ['id'], inplace = True)
-    df.to_csv('C:\\Database\\Exercices\\DATA_2.csv')
+    print("Database logout")'''
 
 
-getDatas()
+
+st.title('Uber pickups in NYC')
+
+DATE_COLUMN = 'date'
+DATA_URL = ('DATA.csv')
+
+@st.cache_data
+def load_data(nrows):
+    data = pd.read_csv(DATA_URL, encoding='latin1', nrows=nrows)
+    lowercase = lambda x: str(x).lower()
+    data.rename(lowercase, axis='columns', inplace=True)
+    data[DATE_COLUMN] = pd.to_datetime(data[DATE_COLUMN])
+    return data
+
+data_load_state = st.text('Loading data...')
+data = load_data(5)
+data_load_state.text("Done!")
+
+if st.checkbox('Show raw data'):
+    st.subheader('Raw data')
+    st.write(data)
+
+# Some number in the range 0-23
+day_to_filter = st.slider('day', 0, 5, 1)
+filtered_data = data[data[DATE_COLUMN].dt.day == day_to_filter]
+
+st.subheader('Essai filter' % day_to_filter)
+st.map(filtered_data)
+
+
+#getDatas()
