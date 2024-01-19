@@ -4,7 +4,7 @@ import streamlit as st
 
 '''def getDatas():
     # Database connection
-    conn = psycopg2.connect(dbname='APP', user='MCL1021', password='FloMar.07-23$')
+    conn = psycopg2.connect(dbname='dbname', user='users', password='password')
     cur = conn.cursor()
     print("Connection to the DB")
 
