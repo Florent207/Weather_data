@@ -8,7 +8,7 @@ import time
 
 def importDB(*args):
     # Database connection
-    conn = psycopg2.connect(dbname='APP', user='MCL1021', password='FloMar.07-23$')
+    conn = psycopg2.connect(dbname='dbname', user='user', password='password')
     cur = conn.cursor()
     print("Connection to the DB")
 
